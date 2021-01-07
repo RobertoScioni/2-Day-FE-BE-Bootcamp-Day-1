@@ -4,10 +4,13 @@
 const express = require("express")
 const cors = require("cors")
 const { join } = require("path")
+const listEndpoints = require("express-list-endpoints")
 /**
  * internal modules
  */
 const { badRequest, funny, catchAllHandler } = require("./services/error")
+const ExamsRoutes = require("./services/Exams")
+
 /**
  * initializations
  */
@@ -18,6 +21,7 @@ const publicFolder = process.env.PUBLIC || join(__dirname, "../public")
 //server initialization process
 server.use(cors())
 server.use(express.json())
+server.use("/exams", ExamsRoutes)
 server.use(badRequest)
 server.use(catchAllHandler)
 
@@ -27,4 +31,5 @@ server.use(catchAllHandler)
 server.listen(port, () => {
 	//console.clear()
 	console.log("server running on port: ", port)
+	console.log(listEndpoints(server))
 })
